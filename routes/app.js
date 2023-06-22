@@ -17,6 +17,16 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
+app.use(function(req, res, next) {
+  const start = Date.now();
+  res.on('finish', function() {
+    const end = Date.now();
+    const responseTime = end - start;
+    console.log('Response time:', responseTime + 'ms');
+  });
+  next();
+});
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
